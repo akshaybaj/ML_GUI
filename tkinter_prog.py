@@ -1,0 +1,10 @@
+from tkinter import *
+root=Tk()
+root.title("First window")
+l1=Label(root,text="My first Label")
+l1.place(x=0,y=0)
+l2=Label(root,text="Second Label")
+l2.place(x=0,y=20)
+b1=Button(root,text="First BUtton")
+b1.place(relx=0.3,rely=0.7,width=100,height=100)
+root.mainloop()

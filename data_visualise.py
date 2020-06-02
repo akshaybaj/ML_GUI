@@ -55,6 +55,12 @@ class data_:
 			if(df[i].dtype!='object'):
 				numeric_col.append(i)
 		return numeric_col
+	def get_cat(self,df):
+		cat_col=[]
+		for i in df.columns:
+			if(df[i].dtype=='object'):
+				cat_col.append(i)
+		return cat_col
 
 	def plot_histogram(self,df,column):
 

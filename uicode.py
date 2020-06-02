@@ -28,6 +28,7 @@ class UI(QMainWindow):
         self.con_btn = self.findChild(QPushButton,"convert_btn")
         self.columns= self.findChild(QListWidget,"column_list")
         self.emptycolumn=self.findChild(QComboBox,"empty_column")
+        self.cat_column=self.findChild(QComboBox,"cat_column")
         self.table = self.findChild(QTableView,"tableView")
         self.dropcolumns=self.findChild(QComboBox,"dropcolumn")
         self.data_shape = self.findChild(QLabel,"shape")
@@ -120,7 +121,7 @@ class UI(QMainWindow):
         self.columns.clear()
         self.column_list=data.get_column_list(self.df)
         self.empty_list=data.get_empty_list(self.df)
-        
+        self.cat_col_list=data.get_cat(self.df)
         for i ,j in enumerate(self.column_list):
             stri=j+ " -------   " + str(self.df[j].dtype)
             self.columns.insertItem(i,stri)
@@ -136,6 +137,8 @@ class UI(QMainWindow):
         self.dropcolumns.addItems(self.column_list)
         self.emptycolumn.clear()
         self.emptycolumn.addItems(self.empty_list)
+        self.cat_column.clear()
+        self.cat_column.addItems(self.cat_col_list)
         self.scatter_x.clear()
         self.scatter_x.addItems(self.column_list)
         self.scatter_y.clear()
@@ -156,7 +159,7 @@ class UI(QMainWindow):
     
     def con_cat(self):
         
-        a=str(self.item.text()).split()[0]
+        a=self.cat_column.currentText()
         self.df[a] =data.convert_category(self.df,a)
         self.filldetails()
 

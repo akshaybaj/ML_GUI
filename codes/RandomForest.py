@@ -4,24 +4,23 @@ import sys
 import data_visualise
 import table_display
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
-from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVR
+from sklearn.ensemble import RandomForestClassifier as RFC
 from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
-from mlxtend.plotting import plot_decision_regions
 import pandas as pd
 import seaborn as sns
-from sklearn.metrics import roc_curve
-from sklearn.metrics import auc
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
 import common
+
 
 
 class UI(QMainWindow):
     def __init__(self,df,target):
         super(UI, self).__init__()
-        uic.loadUi("SVR.ui", self)
+        uic.loadUi("../ui_files/RandomForest.ui", self)
 
         global data 
         data=data_visualise.data_()
@@ -29,23 +28,19 @@ class UI(QMainWindow):
         self.X,self.n_classes,self.target_value,self.df,self.column_list=steps.return_data()
         self.target = self.findChild(QLabel,"target")
         self.columns= self.findChild(QListWidget,"columns")
-        self.test_size= self.findChild(QLabel,"test_size") 
+        self.test_size= self.findChild(QLabel,"test_size")  
         
-        self.c_=self.findChild(QLineEdit,"c_")
-        self.kernel=self.findChild(QComboBox,"kernel")
-        self.degree=self.findChild(QLineEdit,"degree")
-        self.gamma=self.findChild(QComboBox,"gamma")
-        self.custom_gamma=self.findChild(QLineEdit,"custom_gamma")
-        self.coef=self.findChild(QLineEdit,"coef")
-        self.max_iter=self.findChild(QLineEdit,"max_iter")
-        self.dec_func=self.findChild(QComboBox,"dec_func")  
-        self.epsilon=self.findChild(QLineEdit,"epsilon")
-        self.tol=self.findChild(QLineEdit,"tol")
+        self.estimators=self.findChild(QLineEdit,"estimators")
+        self.criterion=self.findChild(QComboBox,"criterion")
+        self.max_depth=self.findChild(QLineEdit,"max_depth")
+        self.min_sample_split=self.findChild(QLineEdit,"min_sample_split")
+        self.bootstrap=self.findChild(QComboBox,"bootstrap")
         self.train_btn=self.findChild(QPushButton,"train")
         
         self.mae=self.findChild(QLabel,"mae")
         self.mse=self.findChild(QLabel,"mse")
         self.rmse=self.findChild(QLabel,"rmse")
+        self.accuracy=self.findChild(QLabel,"accuracy")
         self.roc_btn=self.findChild(QPushButton,"roc")
         self.X_combo=self.findChild(QComboBox,"X_combo")
         self.Y_combo=self.findChild(QComboBox,"Y_combo")
@@ -78,20 +73,14 @@ class UI(QMainWindow):
 
     def training(self):
 
-        self.svr_model = SVR(C=float(self.c_.text()),kernel=self.kernel.currentText(),degree=float(self.degree.text()),gamma=self.gamma.currentText(),coef0=float(self.coef.text()),epsilon=float(self.epsilon.text()),tol=float(self.tol.text()),max_iter=float(self.max_iter.text()))
-        self.svr_model.fit(self.x_train.values,self.y_train.values)
-        X=np.reshape(self.x_test.values,(1,-1))
-        X=np.sort(X)
-        X=np.reshape(X,(-1,1))
-        print(X)
-        print(type(X))
-        plt.plot(X,self.svr_model.predict(X),label='Predicted Line')
-        plt.scatter(self.x_test.values,self.y_test.values,color='r',label="Data Points")
-        plt.show()
-        self.pre=self.svr_model.predict(self.x_test)
+        self.lr = RFC(n_estimators=int(self.estimators.text()),criterion=self.criterion.currentText(),max_depth=None,min_samples_split=int(self.min_sample_split.text()),bootstrap=self.bootstrap.currentText()=='True',random_state=1)
+        self.lr.fit(self.x_train,self.y_train)
+        
+        self.pre=self.lr.predict(self.x_test)
         self.mae.setText(str(metrics.mean_absolute_error(self.y_test,self.pre)))
         self.mse.setText(str(metrics.mean_squared_error(self.y_test,self.pre)))
         self.rmse.setText(str(np.sqrt(metrics.mean_squared_error(self.y_test,self.pre))))
+        self.accuracy.setText(str(accuracy_score(self.pre,self.y_test)))
 
     def conf_matrix(self):
 

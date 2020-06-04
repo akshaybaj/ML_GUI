@@ -10,7 +10,7 @@ import KNN
 class UI(QMainWindow):
     def __init__(self):
         super(UI, self).__init__()
-        uic.loadUi("Mainwindow.ui", self)
+        uic.loadUi("../ui_files/Mainwindow.ui", self)
  
         # find the widgets in the xml file
  

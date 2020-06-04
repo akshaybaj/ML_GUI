@@ -16,7 +16,7 @@ import common
 class UI(QMainWindow):
     def __init__(self,df,target):
         super(UI, self).__init__()
-        uic.loadUi("LinearRegression.ui", self)
+        uic.loadUi("../ui_files/LinearRegression.ui", self)
         global data 
         data=data_visualise.data_()
         steps=common.common_steps(df,target)

@@ -5,7 +5,7 @@ import data_visualise
 import table_display
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVR
+from sklearn.neighbors import KNeighborsClassifier as KNC
 from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ import common
 class UI(QMainWindow):
     def __init__(self,df,target):
         super(UI, self).__init__()
-        uic.loadUi("LogisticRegression.ui", self)
+        uic.loadUi("../ui_files/KNN.ui", self)
 
         global data 
         data=data_visualise.data_()
@@ -28,26 +28,19 @@ class UI(QMainWindow):
         self.X,self.n_classes,self.target_value,self.df,self.column_list=steps.return_data()
         self.target = self.findChild(QLabel,"target")
         self.columns= self.findChild(QListWidget,"columns")
-        self.test_size= self.findChild(QLabel,"test_size") 
-        self.target = self.findChild(QLabel,"target")
-        self.columns= self.findChild(QListWidget,"columns")
         self.test_size= self.findChild(QLabel,"test_size")  
         
-        self.c_=self.findChild(QLineEdit,"c_")
-        self.penalty=self.findChild(QComboBox,"penalty")
-        self.solver=self.findChild(QComboBox,"solver")        
-        self.dual=self.findChild(QComboBox,"dual")       
-        self.max_iter=self.findChild(QLineEdit,"max_iter")
-        self.fit_inter=self.findChild(QComboBox,"fit_inter")  
-        self.multi_class=self.findChild(QComboBox,"multi_class")
-        self.tol=self.findChild(QLineEdit,"tol")
-        self.train_btn=self.findChild(QPushButton,"train")
+        self.neighbours=self.findChild(QLineEdit,"neighbours")
+        self.weights=self.findChild(QComboBox,"weights")
+        self.algorithm=self.findChild(QComboBox,"algorithm")
+        
         
         self.mae=self.findChild(QLabel,"mae")
         self.mse=self.findChild(QLabel,"mse")
         self.rmse=self.findChild(QLabel,"rmse")
         self.accuracy=self.findChild(QLabel,"accuracy")
         self.roc_btn=self.findChild(QPushButton,"roc")
+        self.train_btn=self.findChild(QPushButton,"train")
         self.X_combo=self.findChild(QComboBox,"X_combo")
         self.Y_combo=self.findChild(QComboBox,"Y_combo")
 
@@ -79,7 +72,7 @@ class UI(QMainWindow):
 
     def training(self):
 
-        self.lr = LogisticRegression(C=float(self.c_.text()),penalty=self.penalty.currentText(),dual=self.dual.currentText()=='True',tol=float(self.tol.text()),max_iter=float(self.max_iter.text()),fit_intercept=self.fit_inter.currentText()=='True',random_state=1,solver=self.solver.currentText(),multi_class=self.multi_class.currentText())
+        self.lr = KNC(n_neighbors=int(self.neighbours.text()),weights=self.weights.currentText(),algorithm=self.algorithm.currentText())
         self.lr.fit(self.x_train,self.y_train)
         
         self.pre=self.lr.predict(self.x_test)

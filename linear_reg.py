@@ -11,6 +11,7 @@ import numpy as np
 import data_visualise
 import table_display
 import pandas as pd
+import common
 
 class UI(QMainWindow):
     def __init__(self,df,target):
@@ -18,21 +19,15 @@ class UI(QMainWindow):
         uic.loadUi("LinearRegression.ui", self)
         global data 
         data=data_visualise.data_()
-        self.X=df
-        
-        self.target_value=str(target)
-        self.df=data.drop_columns(self.X,self.target_value)
-        self.column_list=data.get_column_list(self.df)
-        self.setvalue()
-        # find the widgets in the xml file
- 
-        #self.textedit = self.findChild(QTextEdit, "textEdit")
-        #self.button = self.findChild(QPushButton, "pushButton")
-        #self.button.clicked.connect(self.clickedBtn
+        steps=common.common_steps(df,target)
+        self.X,self.n_classes,self.target_value,self.df,self.column_list=steps.return_data()
         self.target = self.findChild(QLabel,"target")
-        self.columns= self.findChild(QLabel,"columns")
+        self.columns= self.findChild(QListWidget,"columns")
+        self.test_size= self.findChild(QLabel,"test_size") 
+        self.setvalue()
+
         self.train_size= self.findChild(QLabel,"train_size")
-        self.test_size= self.findChild(QLabel,"test_size")
+        
         
         self.test_data=self.findChild(QLineEdit,"test_data")
         self.test_size_btn=self.findChild(QPushButton,"test_size_btn")

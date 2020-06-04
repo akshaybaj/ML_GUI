@@ -1317,12 +1317,17 @@
     </item>
     <item>
      <property name="text">
-      <string>Ensemble Learning</string>
+      <string>Random Forest</string>
      </property>
     </item>
     <item>
      <property name="text">
-      <string>Random Forest</string>
+      <string>K-Nearest Neighbour</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Gaussian NB</string>
      </property>
     </item>
     <item>
@@ -1342,12 +1347,7 @@
     </item>
     <item>
      <property name="text">
-      <string>K-Nearest Neighbour</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Gaussian NB</string>
+      <string>Ensemble Learning</string>
      </property>
     </item>
    </widget>

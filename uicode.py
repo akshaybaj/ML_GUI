@@ -4,7 +4,8 @@ import sys
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
 from sklearn.preprocessing import LabelEncoder
 
-import linear_reg,svm_model,table_display,data_visualise,SVR,logistic_reg
+import linear_reg,svm_model,table_display,data_visualise,SVR,logistic_reg,RandomForest
+import KNN
 
 class UI(QMainWindow):
     def __init__(self):
@@ -204,7 +205,8 @@ class UI(QMainWindow):
      
     def train_func(self):
 
-        myDict={ "Linear Regression":linear_reg , "SVM":svm_model ,"SVR":SVR , "Logistic Regression":logistic_reg}
+        myDict={ "Linear Regression":linear_reg , "SVM":svm_model ,"SVR":SVR , "Logistic Regression":logistic_reg ,"Random Forest":RandomForest,
+        "K-Nearest Neighbour":KNN}
         
         if(self.target_value!=""):
             

@@ -15,7 +15,7 @@ import pandas as pd
 import seaborn as sns
 from sklearn.metrics import roc_curve
 from sklearn.metrics import auc
-
+import common
 
 
 class UI(QMainWindow):
@@ -25,14 +25,12 @@ class UI(QMainWindow):
 
         global data 
         data=data_visualise.data_()
-        self.X=df
-        self.n_classes=self.X[str(target)].nunique()
-        self.target_value=str(target)
-        self.df=data.drop_columns(self.X,self.target_value)
-        self.column_list=data.get_column_list(self.df)
+        steps=common.common_steps(df,target)
+        self.X,self.n_classes,self.target_value,self.df,self.column_list=steps.return_data()
         self.target = self.findChild(QLabel,"target")
         self.columns= self.findChild(QListWidget,"columns")
-        self.test_size= self.findChild(QLabel,"test_size")
+        self.test_size= self.findChild(QLabel,"test_size") 
+      
         self.c_=self.findChild(QLineEdit,"c_")
         self.kernel=self.findChild(QComboBox,"kernel")
         self.degree=self.findChild(QLineEdit,"degree")

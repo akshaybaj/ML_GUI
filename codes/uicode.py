@@ -88,11 +88,16 @@ class UI(QMainWindow):
 
         self.train=self.findChild(QPushButton,"train")
         self.train.clicked.connect(self.train_func)
-
+        self.scale_btn.clicked.connect(self.scale_value)
         
         self.show()
 
-  
+    def scale_value(self):
+
+        self.df = data.scale_value(self.df,self.target_value)
+        self.filldetails()
+
+
     def hist_add_column(self):
 
         self.hist_column_add.addItem(self.hist_column.currentText())

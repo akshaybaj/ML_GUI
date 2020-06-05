@@ -1,17 +1,17 @@
 from PyQt5.QtWidgets import *
-import sys
+import sys,pickle
 
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
 from sklearn.preprocessing import LabelEncoder
 
 import linear_reg,svm_model,table_display,data_visualise,SVR,logistic_reg,RandomForest
-import KNN,mlp
+import KNN,mlp,pre_trained,add_steps
 
 class error_window(QMainWindow):
     def __init__(self):
         super(error_window, self).__init__()
-        uic.loadUi("../ui_files/error.ui", self)
-        self.show()
+        #uic.loadUi("../ui_files/error.ui", self)
+        #self.show()
 
 
 
@@ -25,9 +25,9 @@ class UI(QMainWindow):
         #self.textedit = self.findChild(QTextEdit, "textEdit")
         #self.button = self.findChild(QPushButton, "pushButton")
         #self.button.clicked.connect(self.clickedBtn)
-        global data 
+        global data,steps
         data=data_visualise.data_()
-        
+        steps=add_steps.add_steps()
 
 
         self.Browse = self.findChild(QPushButton,"Browse")
@@ -90,11 +90,14 @@ class UI(QMainWindow):
         self.train.clicked.connect(self.train_func)
         self.scale_btn.clicked.connect(self.scale_value)
         
+        self.pre_trained.clicked.connect(self.upload_model)
+        self.go_pre_trained.clicked.connect(self.test_pretrained)
         self.show()
 
     def scale_value(self):
 
         self.df = data.scale_value(self.df,self.target_value)
+        steps.add_text("Standard scaling of Data done")
         self.filldetails()
 
 
@@ -172,23 +175,32 @@ class UI(QMainWindow):
         x=table_display.DataFrameModel(self.df)
         self.table.setModel(x)
         
-
+    def upload_model(self):
+        self.filePath_pre, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', '/home/akshay/Dekstop',"pkl(*.pkl)")
+        with open(self.filePath_pre, 'rb') as file:
+            self.pickle_model = pickle.load(file)
         
-    
+    def test_pretrained(self):
+
+        self.testing=pre_trained.UI(self.df,self.target_value,self.pickle_model,self.filePath_pre)
+
     def con_cat(self):
         
         a=self.cat_column.currentText()
         self.df[a] =data.convert_category(self.df,a)
+        steps.add_text("Column "+ a + " converted using LabelEncoder")
         self.filldetails()
 
     def fillna(self):
 
         self.df[self.emptycolumn.currentText()]=data.fillna(self.df,self.emptycolumn.currentText())
+        steps.add_text("Empty values of "+ self.emptycolumn.currentText() + "filled with Uknown")
         self.filldetails()
 
     def fillme(self):
 
         self.df[self.emptycolumn.currentText()]=data.fillmean(self.df,self.emptycolumn.currentText())
+        steps.add_text("Empty values of "+ self.emptycolumn.currentText() + "filled with mean value")
         self.filldetails()
 
     def getCSV(self):
@@ -208,6 +220,7 @@ class UI(QMainWindow):
             self.target_value=""
             self.target_col.setText("")
         self.df=data.drop_columns(self.df,self.dropcolumns.currentText())
+        steps.add_text("Column "+ self.dropcolumns.currentText()+ " dropped")
         self.filldetails()  
 
     def scatter_plot(self):
@@ -227,7 +240,7 @@ class UI(QMainWindow):
         
         if(self.target_value!=""):
             
-            self.win = myDict[self.model_select.currentText()].UI(self.df,self.target_value)
+            self.win = myDict[self.model_select.currentText()].UI(self.df,self.target_value,steps)
             
                     
         

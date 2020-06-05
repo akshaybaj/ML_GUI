@@ -1,29 +1,25 @@
 
 from PyQt5.QtWidgets import *
-import sys,os
-import data_visualise,common
-import re
+import sys,os,re,pickle
+import data_visualise,common,add_steps
+
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
 
 from sklearn.model_selection import train_test_split
-from keras.models import Sequential
-from keras.layers import Dense
 from sklearn.neural_network import MLPClassifier
 from sklearn import metrics
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from sklearn.metrics import roc_curve
-from sklearn.metrics import auc
 
 
 
 class UI(QMainWindow):
-    def __init__(self,df,target):
+    def __init__(self,df,target,user_actions):
         super(UI, self).__init__()
         uic.loadUi("../ui_files/MLP.ui", self)
-
+        self.user_act=user_actions
         global data 
         data=data_visualise.data_()
         steps=common.common_steps(df,target)
@@ -40,6 +36,7 @@ class UI(QMainWindow):
         self.reshape_btn.clicked.connect(self.reshape_data)
         self.go.clicked.connect(self.create_model)
         self.conf_mat.clicked.connect(self.conf_matrix)
+        self.dwnld.clicked.connect(self.download_model)
         self.setvalue()
         
         self.show()
@@ -51,8 +48,19 @@ class UI(QMainWindow):
         self.data_shape.setText(str(self.df.shape))
          
         self.reshape.setText(re.sub('[()]', '', str(self.df.shape)))
-        
+
+       
     
+    def download_model(self):
+
+        name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File','/home/akshay/Desktop',"pickle(*.pkl)")
+        #file = open(name[0],'w')
+        
+        pkl_filename = name[0]
+        with open(pkl_filename, 'wb') as file:
+            pickle.dump(self.mlp, file)  
+        
+        self.user_act.save_file(pkl_filename)
 
     def reshape_data(self):
         
@@ -79,19 +87,7 @@ class UI(QMainWindow):
         self.alpha_=float(self.alpha_val.text())
         self.lr=float(self.learning_rate.text())
         self.max_iter_=int(self.iteration.text())
-        '''
-        original=sys.stdout
-        
-        sys.stdout = open('summary.txt', 'w')
-        
-        print(self.model.summary())
-        sys.stdout=original
-        text=open('summary.txt').read()
-        self.summary.setPlainText(text)
-        os.remove('summary.txt')
-        self.model.compile(loss='binary_crossentropy', optimizer='SGD', metrics=['accuracy'])
-        '''
-
+    
     def training(self):
 
         self.mlp = MLPClassifier(hidden_layer_sizes=eval(self.hidden_layer), activation=self.active_, learning_rate_init=self.lr,alpha=self.alpha_,max_iter=self.max_iter_,random_state=1,verbose=True)

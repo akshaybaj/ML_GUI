@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTextEdit ,QListWidget ,QTableView ,QComboBox,QLabel,QLineEdit,QTextBrowser
-import sys
+import sys,pickle
 
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
 from sklearn.preprocessing import LabelEncoder
@@ -14,9 +14,10 @@ import pandas as pd
 import common
 
 class UI(QMainWindow):
-    def __init__(self,df,target):
+    def __init__(self,df,target,user_actions):
         super(UI, self).__init__()
         uic.loadUi("../ui_files/LinearRegression.ui", self)
+        self.user_act=user_actions
         global data 
         data=data_visualise.data_()
         steps=common.common_steps(df,target)
@@ -47,6 +48,7 @@ class UI(QMainWindow):
         self.train_btn.clicked.connect(self.training)
         self.output_btn.clicked.connect(self.output_)
         self.bar_plot_btn.clicked.connect(self.barplot)
+        self.dwnld.clicked.connect(self.download_model)
         self.show()
 
     def setvalue(self):
@@ -55,7 +57,17 @@ class UI(QMainWindow):
         self.target.setText(self.target_value)
         self.columns.clear()
         self.columns.addItems(self.column_list)
-       
+    
+    def download_model(self):
+
+        name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File','/home/akshay/Desktop',"pickle(*.pkl)")
+        #file = open(name[0],'w')
+        
+        pkl_filename = name[0]
+        with open(pkl_filename, 'wb') as file:
+            pickle.dump(self.reg, file)  
+        
+        self.user_act.save_file(pkl_filename)  
 
     def test_split(self):
 

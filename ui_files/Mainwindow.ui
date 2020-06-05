@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
-    <height>643</height>
+    <width>898</width>
+    <height>625</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1332,22 +1332,7 @@
     </item>
     <item>
      <property name="text">
-      <string>ADABOOST</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
       <string>Multi Layer Perceptron</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>CNN</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Ensemble Learning</string>
      </property>
     </item>
    </widget>
@@ -1392,7 +1377,7 @@
      <string>Use a Pre-Trained Model :</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Browse_2">
+   <widget class="QPushButton" name="pre_trained">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -1411,7 +1396,7 @@
      <string>Browse</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Browse_3">
+   <widget class="QPushButton" name="go_pre_trained">
     <property name="geometry">
      <rect>
       <x>760</x>
@@ -1549,12 +1534,17 @@
    <widget class="QComboBox" name="scaler">
     <property name="geometry">
      <rect>
-      <x>660</x>
+      <x>640</x>
       <y>10</y>
-      <width>111</width>
+      <width>131</width>
       <height>23</height>
      </rect>
     </property>
+    <item>
+     <property name="text">
+      <string>StandardScaler</string>
+     </property>
+    </item>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1563,7 +1553,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>898</width>
      <height>20</height>
     </rect>
    </property>

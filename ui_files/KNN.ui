@@ -329,7 +329,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QPushButton" name="roc">
+   <widget class="QPushButton" name="dwnld">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -345,7 +345,7 @@
      </font>
     </property>
     <property name="text">
-     <string>ROC Curve</string>
+     <string>Download</string>
     </property>
    </widget>
    <widget class="QLabel" name="rmse">

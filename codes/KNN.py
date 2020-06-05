@@ -1,6 +1,6 @@
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTextEdit ,QListWidget ,QTableView ,QComboBox,QLabel,QLineEdit,QTextBrowser
-import sys
+import sys,pickle
 import data_visualise
 import table_display
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
@@ -18,10 +18,10 @@ import common
 
 
 class UI(QMainWindow):
-    def __init__(self,df,target):
+    def __init__(self,df,target,user_actions):
         super(UI, self).__init__()
         uic.loadUi("../ui_files/KNN.ui", self)
-
+        self.user_act=user_actions
         global data 
         data=data_visualise.data_()
         steps=common.common_steps(df,target)
@@ -51,6 +51,7 @@ class UI(QMainWindow):
         #self.roc_btn.clicked.connect(self.roc_plot)
         self.conf_mat_btn.clicked.connect(self.conf_matrix)
         self.test_size_btn.clicked.connect(self.test_split)
+        self.dwnld.clicked.connect(self.download_model)
         self.setvalue()
         self.show()
 
@@ -61,7 +62,17 @@ class UI(QMainWindow):
         self.X_combo.addItems(self.column_list)
         self.Y_combo.addItems(self.column_list)
 
-    
+    def download_model(self):
+
+        name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File','/home/akshay/Desktop',"pickle(*.pkl)")
+        #file = open(name[0],'w')
+        
+        pkl_filename = name[0]
+        with open(pkl_filename, 'wb') as file:
+            pickle.dump(self.lr, file)  
+        
+        self.user_act.save_file(pkl_filename)
+
     def test_split(self):
 
         self.x_train,self.x_test,self.y_train,self.y_test = train_test_split(self.df,self.X[self.target_value],test_size=float(self.test_data.text()),random_state=0)

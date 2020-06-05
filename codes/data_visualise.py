@@ -62,6 +62,10 @@ class data_:
 				cat_col.append(i)
 		return cat_col
 
+	def get_describe(self,df):
+
+		return str(df.describe())
+		
 	def plot_histogram(self,df,column):
 
 		df.hist(column=column)

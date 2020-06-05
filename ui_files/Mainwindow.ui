@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>846</width>
-    <height>638</height>
+    <width>900</width>
+    <height>643</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -185,7 +185,7 @@
    <widget class="QListWidget" name="column_list">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>40</y>
       <width>251</width>
       <height>181</height>
@@ -195,9 +195,9 @@
    <widget class="QTableView" name="tableView">
     <property name="geometry">
      <rect>
-      <x>390</x>
+      <x>360</x>
       <y>40</y>
-      <width>451</width>
+      <width>521</width>
       <height>181</height>
      </rect>
     </property>
@@ -1053,7 +1053,7 @@
      <rect>
       <x>-20</x>
       <y>320</y>
-      <width>1101</width>
+      <width>1281</width>
       <height>16</height>
      </rect>
     </property>
@@ -1527,6 +1527,35 @@
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="scale_btn">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>10</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Ubuntu Condensed</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Scale Values</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="scaler">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>10</y>
+      <width>111</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
@@ -1534,7 +1563,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>846</width>
+     <width>900</width>
      <height>20</height>
     </rect>
    </property>

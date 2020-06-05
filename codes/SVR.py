@@ -57,6 +57,7 @@ class UI(QMainWindow):
         #self.roc_btn.clicked.connect(self.roc_plot)
         self.conf_mat_btn.clicked.connect(self.conf_matrix)
         self.test_size_btn.clicked.connect(self.test_split)
+        
         self.setvalue()
         self.show()
 

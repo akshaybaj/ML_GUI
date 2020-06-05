@@ -1,11 +1,19 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTextEdit ,QListWidget ,QTableView ,QComboBox,QLabel
+from PyQt5.QtWidgets import *
 import sys
 
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
 from sklearn.preprocessing import LabelEncoder
 
 import linear_reg,svm_model,table_display,data_visualise,SVR,logistic_reg,RandomForest
-import KNN
+import KNN,mlp
+
+class error_window(QMainWindow):
+    def __init__(self):
+        super(error_window, self).__init__()
+        uic.loadUi("../ui_files/error.ui", self)
+        self.show()
+
+
 
 class UI(QMainWindow):
     def __init__(self):
@@ -37,6 +45,7 @@ class UI(QMainWindow):
         self.submit_btn = self.findChild(QPushButton,"Submit")
         self.target_col =self.findChild(QLabel,"target_col")
         self.model_select=self.findChild(QComboBox,"model_select")
+        #self.describe=self.findChild(QPlainTextEdit,"describe")
         #self.describe= self.findChild(QTextEdit,"Describe")
         
         self.scatter_x=self.findChild(QComboBox,"scatter_x")
@@ -151,6 +160,9 @@ class UI(QMainWindow):
         self.hist_column.clear()
         self.hist_column.addItems(data.get_numeric(self.df))
         self.hist_column.addItem("All")
+
+        
+        #self.describe.setText(data.get_describe(self.df))
         
         x=table_display.DataFrameModel(self.df)
         self.table.setModel(x)
@@ -206,7 +218,7 @@ class UI(QMainWindow):
     def train_func(self):
 
         myDict={ "Linear Regression":linear_reg , "SVM":svm_model ,"SVR":SVR , "Logistic Regression":logistic_reg ,"Random Forest":RandomForest,
-        "K-Nearest Neighbour":KNN}
+        "K-Nearest Neighbour":KNN ,"Multi Layer Perceptron":mlp}
         
         if(self.target_value!=""):
             
@@ -221,4 +233,5 @@ class UI(QMainWindow):
  
 app = QApplication(sys.argv)
 window = UI()
+error_w=error_window()
 app.exec_()

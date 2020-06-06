@@ -436,7 +436,7 @@
       <x>370</x>
       <y>40</y>
       <width>431</width>
-      <height>151</height>
+      <height>141</height>
      </rect>
     </property>
    </widget>
@@ -538,8 +538,8 @@
    <widget class="QPushButton" name="dwnld">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>390</y>
+      <x>670</x>
+      <y>490</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -557,8 +557,8 @@
    <widget class="QPushButton" name="conf_mat">
     <property name="geometry">
      <rect>
-      <x>370</x>
-      <y>340</y>
+      <x>520</x>
+      <y>490</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -590,35 +590,6 @@
     </property>
     <property name="text">
      <string>Mean Square Error:</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="X_combo">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>340</y>
-      <width>79</width>
-      <height>23</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="visualize">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>360</y>
-      <width>131</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Ubuntu Condensed</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Visualize Boundary</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_19">
@@ -678,25 +649,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_21">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>340</y>
-      <width>61</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Ubuntu Condensed</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>X:</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="rmse">
     <property name="geometry">
      <rect>
@@ -733,35 +685,6 @@
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_22">
-    <property name="geometry">
-     <rect>
-      <x>550</x>
-      <y>380</y>
-      <width>61</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Ubuntu Condensed</family>
-      <pointsize>11</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Y:</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="Y_combo">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>380</y>
-      <width>79</width>
-      <height>23</height>
-     </rect>
     </property>
    </widget>
    <widget class="QLabel" name="mae">
@@ -907,7 +830,7 @@
       <x>340</x>
       <y>0</y>
       <width>16</width>
-      <height>511</height>
+      <height>531</height>
      </rect>
     </property>
     <property name="orientation">
@@ -918,13 +841,42 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>500</y>
+      <y>520</y>
       <width>781</width>
       <height>16</height>
      </rect>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_30">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>330</y>
+      <width>151</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Ubuntu Condensed</family>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Classification Report:</string>
+    </property>
+   </widget>
+   <widget class="QPlainTextEdit" name="report">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>360</y>
+      <width>451</width>
+      <height>111</height>
+     </rect>
     </property>
    </widget>
   </widget>

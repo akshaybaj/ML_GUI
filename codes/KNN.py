@@ -1,6 +1,6 @@
 
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QTextEdit ,QListWidget ,QTableView ,QComboBox,QLabel,QLineEdit,QTextBrowser
-import sys,pickle
+import sys,pickle,os
 import data_visualise
 import table_display
 from PyQt5 import uic, QtWidgets ,QtCore, QtGui
@@ -13,7 +13,7 @@ import pandas as pd
 import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-import common
+import common,plots
 
 
 
@@ -22,7 +22,7 @@ class UI(QMainWindow):
         super(UI, self).__init__()
         uic.loadUi("../ui_files/KNN.ui", self)
         self.user_act=user_actions
-        global data 
+        global data ,steps
         data=data_visualise.data_()
         steps=common.common_steps(df,target)
         self.X,self.n_classes,self.target_value,self.df,self.column_list=steps.return_data()
@@ -52,6 +52,7 @@ class UI(QMainWindow):
         self.conf_mat_btn.clicked.connect(self.conf_matrix)
         self.test_size_btn.clicked.connect(self.test_split)
         self.dwnld.clicked.connect(self.download_model)
+        self.visualize.clicked.connect(self.boundary)
         self.setvalue()
         self.show()
 
@@ -73,6 +74,12 @@ class UI(QMainWindow):
         
         self.user_act.save_file(pkl_filename)
 
+    def boundary(self):
+
+        x1=self.X_combo.currentText()
+        x2=self.Y_combo.currentText()
+        plots.plot_boundary(self.df[x1],self.df[x2],self.lr.predict(self.df))
+
     def test_split(self):
 
         self.x_train,self.x_test,self.y_train,self.y_test = train_test_split(self.df,self.X[self.target_value],test_size=float(self.test_data.text()),random_state=0)
@@ -91,6 +98,9 @@ class UI(QMainWindow):
         self.mse.setText(str(metrics.mean_squared_error(self.y_test,self.pre)))
         self.rmse.setText(str(np.sqrt(metrics.mean_squared_error(self.y_test,self.pre))))
         self.accuracy.setText(str(accuracy_score(self.pre,self.y_test)))
+
+        text=steps.classification_(self.y_test,self.pre)
+        self.report.setPlainText(text)
 
     def conf_matrix(self):
 

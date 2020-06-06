@@ -1,5 +1,6 @@
 
-import data_visualise
+import data_visualise ,sys,os
+from sklearn.metrics import classification_report
 
 class common_steps:
 
@@ -16,3 +17,17 @@ class common_steps:
 
     def return_data(self):
         return self.X ,self.n_classes ,self.target_value,self.df,self.column_list
+
+    def classification_(self,y_true,y_pred):
+
+        original=sys.stdout
+        sys.stdout = open('report.txt', 'w')
+        print(classification_report(y_true,y_pred))
+        sys.stdout=original
+        text=open('report.txt').read()
+        os.remove('report.txt')
+        
+        return text
+
+
+

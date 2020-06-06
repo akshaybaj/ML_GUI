@@ -20,7 +20,7 @@ class UI(QMainWindow):
         super(UI, self).__init__()
         uic.loadUi("../ui_files/MLP.ui", self)
         self.user_act=user_actions
-        global data 
+        global data ,steps
         data=data_visualise.data_()
         steps=common.common_steps(df,target)
         self.X,self.n_classes,self.target_value,self.df,self.column_list=steps.return_data()
@@ -50,7 +50,7 @@ class UI(QMainWindow):
         self.reshape.setText(re.sub('[()]', '', str(self.df.shape)))
 
        
-    
+     
     def download_model(self):
 
         name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File','/home/akshay/Desktop',"pickle(*.pkl)")
@@ -107,6 +107,9 @@ class UI(QMainWindow):
         self.mse.setText(str(metrics.mean_squared_error(self.y_test,self.pre)))
         self.rmse.setText(str(np.sqrt(metrics.mean_squared_error(self.y_test,self.pre))))
         self.accuracy.setText(str(metrics.accuracy_score(self.y_test,self.pre)))
+
+        text=steps.classification_(self.y_test,self.pre)
+        self.report.setPlainText(text)
     def conf_matrix(self):
 
         data = {'y_Actual':self.y_test,'y_Predicted':self.pre }

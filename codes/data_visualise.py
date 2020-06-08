@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np 
-from sklearn.preprocessing import LabelEncoder,StandardScaler
+from sklearn.preprocessing import LabelEncoder,StandardScaler,MinMaxScaler,PowerTransformer
 
 class data_:
 
@@ -66,7 +66,7 @@ class data_:
 
 		return str(df.describe())
 	
-	def scale_value(self,df,target):
+	def StandardScale(self,df,target):
 		
 		sc=StandardScaler()
 		x=df.drop(target,axis=1)
@@ -74,19 +74,40 @@ class data_:
 		scaled_features_df = pd.DataFrame(scaled_features, index=x.index, columns=x.columns)
 		scaled_features_df[target]=df[target]
 		return scaled_features_df
-		
-	def plot_histogram(self,df,column):
 
+	def MinMaxScale(self,df,target):
+		
+		sc=MinMaxScaler()
+		x=df.drop(target,axis=1)
+		scaled_features=sc.fit_transform(x)
+		scaled_features_df = pd.DataFrame(scaled_features, index=x.index, columns=x.columns)
+		scaled_features_df[target]=df[target]
+		return scaled_features_df
+		
+	def PowerScale(self,df,target):
+		
+		sc=PowerTransformer()
+		x=df.drop(target,axis=1)
+		scaled_features=sc.fit_transform(x)
+		scaled_features_df = pd.DataFrame(scaled_features, index=x.index, columns=x.columns)
+		scaled_features_df[target]=df[target]
+		return scaled_features_df
+
+
+	def plot_histogram(self,df,column):
+		
 		df.hist(column=column)
 		plt.show()
 
 	def plot_heatmap(self,df):
+		plt.figure()
 		x=df.corr()
 		mask = np.triu(np.ones_like(x, dtype=np.bool))
 		sns.heatmap(x,annot=True,mask=mask,vmin=-1,vmax=1)
 		plt.show()
 
 	def scatter_plot(self,df,x,y,c,marker):
+		plt.figure()
 		plt.scatter(df[x],df[y],c=c,marker=marker)
 		plt.xlabel(x)
 		plt.ylabel(y)
@@ -94,6 +115,7 @@ class data_:
 		plt.show()
 
 	def line_plot(self,df,x,y,c,marker):
+		plt.figure()
 		plt.plot(df[x],df[y],c=c,marker=marker)
 		plt.xlabel(x)
 		plt.ylabel(y)

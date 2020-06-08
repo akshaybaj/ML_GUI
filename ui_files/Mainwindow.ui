@@ -1542,7 +1542,17 @@
     </property>
     <item>
      <property name="text">
-      <string>StandardScaler</string>
+      <string>StandardScale</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>MinMaxScale</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>PowerScale</string>
      </property>
     </item>
    </widget>

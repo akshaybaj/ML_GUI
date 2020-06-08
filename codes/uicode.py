@@ -5,7 +5,8 @@ from PyQt5 import uic, QtWidgets ,QtCore, QtGui
 from sklearn.preprocessing import LabelEncoder
 
 import linear_reg,svm_model,table_display,data_visualise,SVR,logistic_reg,RandomForest
-import KNN,mlp,pre_trained,add_steps
+import KNN,mlp,pre_trained,add_steps,gaussian
+
 
 class error_window(QMainWindow):
     def __init__(self):
@@ -96,8 +97,15 @@ class UI(QMainWindow):
 
     def scale_value(self):
 
-        self.df = data.scale_value(self.df,self.target_value)
-        steps.add_text("Standard scaling of Data done")
+        #my_dict={"StandardScaler":standard_scale ,"MinMaxScaler":min_max, "PowerScaler":power_scale}
+        if self.scaler.currentText()=='StandardScale':
+            self.df = data.StandardScale(self.df,self.target_value)
+        elif self.scaler.currentText()=='MinMaxScale':
+            self.df = data.MinMaxScale(self.df,self.target_value)
+        elif self.scaler.currentText()=='PowerScale':
+            self.df = data.PowerScale(self.df,self.target_value)
+        
+        steps.add_text(self.scaler.currentText()+" applied to data")
         self.filldetails()
 
 
@@ -236,7 +244,7 @@ class UI(QMainWindow):
     def train_func(self):
 
         myDict={ "Linear Regression":linear_reg , "SVM":svm_model ,"SVR":SVR , "Logistic Regression":logistic_reg ,"Random Forest":RandomForest,
-        "K-Nearest Neighbour":KNN ,"Multi Layer Perceptron":mlp}
+        "K-Nearest Neighbour":KNN ,"Multi Layer Perceptron":mlp ,"Gaussian NB":gaussian}
         
         if(self.target_value!=""):
             

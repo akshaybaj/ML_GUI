@@ -90,11 +90,14 @@ class UI(QMainWindow):
 		self.svc_model.fit(self.x_train.values,self.y_train.values)
 		value=0
 		width=0
+		self.plotting=self.column_list[2:]
+		print(self.plotting)
+		
 		plot_decision_regions(X=self.x_train.values,
 					  y=self.y_train.values,
 					  clf=self.svc_model,
-					  filler_feature_values={2: value, 3:value },
-					  filler_feature_ranges={2: width, 3: width},
+					  filler_feature_values={i+2:value for i,j in enumerate(self.plotting) },
+					  filler_feature_ranges={i+2:width for i,j in enumerate(self.plotting)},
 					  zoom_factor=0.1,
 					  legend=2)
 		plt.show()

@@ -99,13 +99,14 @@ class UI(QMainWindow):
 
         #my_dict={"StandardScaler":standard_scale ,"MinMaxScaler":min_max, "PowerScaler":power_scale}
         if self.scaler.currentText()=='StandardScale':
-            self.df = data.StandardScale(self.df,self.target_value)
+            self.df,func_name = data.StandardScale(self.df,self.target_value)
         elif self.scaler.currentText()=='MinMaxScale':
-            self.df = data.MinMaxScale(self.df,self.target_value)
+            self.df,func_name = data.MinMaxScale(self.df,self.target_value)
         elif self.scaler.currentText()=='PowerScale':
-            self.df = data.PowerScale(self.df,self.target_value)
+            self.df,func_name = data.PowerScale(self.df,self.target_value)
         
         steps.add_text(self.scaler.currentText()+" applied to data")
+        steps.add_pipeline(self.scaler.currentText(),func_name)
         self.filldetails()
 
 
@@ -135,6 +136,7 @@ class UI(QMainWindow):
     def set_target(self):
 
         self.target_value=str(self.item.text()).split()[0]
+        steps.add_code("target=data['"+self.target_value+"']")
         self.target_col.setText(self.target_value)
 
     def filldetails(self,flag=1):
@@ -195,27 +197,36 @@ class UI(QMainWindow):
     def con_cat(self):
         
         a=self.cat_column.currentText()
-        self.df[a] =data.convert_category(self.df,a)
+        self.df[a],func_name =data.convert_category(self.df,a)
         steps.add_text("Column "+ a + " converted using LabelEncoder")
+        steps.add_pipeline("LabelEncoder",func_name)
         self.filldetails()
 
     def fillna(self):
 
         self.df[self.emptycolumn.currentText()]=data.fillna(self.df,self.emptycolumn.currentText())
-        steps.add_text("Empty values of "+ self.emptycolumn.currentText() + "filled with Uknown")
+        code="data['"+self.emptycolumn.currentText()+"'].fillna('"'Uknown'"',inplace=True)"
+        steps.add_code(code)
+        steps.add_text("Empty values of "+ self.emptycolumn.currentText() + " filled with Uknown")
         self.filldetails()
 
     def fillme(self):
 
         self.df[self.emptycolumn.currentText()]=data.fillmean(self.df,self.emptycolumn.currentText())
-        steps.add_text("Empty values of "+ self.emptycolumn.currentText() + "filled with mean value")
+        code="data['"+column+"'].fillna(data['"+self.emptycolumn.currentText()+"'].mean(),inplace=True)"
+        steps.add_code(code)
+        steps.add_text("Empty values of "+ self.emptycolumn.currentText() + " filled with mean value")
         self.filldetails()
 
     def getCSV(self):
         self.filePath, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', '/home/akshay/Downloads/ML Github/datasets',"csv(*.csv)")
         self.columns.clear()
+        code="data=pd.read_csv('"+str(self.filePath)+"')"
+        steps.add_code(code)
+        steps.add_text("File "+self.filePath+" read")
         if(self.filePath!=""):
             self.filldetails(0)
+
 
     def target(self):
         self.item=self.columns.currentItem()
@@ -228,6 +239,7 @@ class UI(QMainWindow):
             self.target_value=""
             self.target_col.setText("")
         self.df=data.drop_columns(self.df,self.dropcolumns.currentText())
+        steps.add_code("data=data.drop('"+self.dropcolumns.currentText()+"',axis=1)")
         steps.add_text("Column "+ self.dropcolumns.currentText()+ " dropped")
         self.filldetails()  
 

@@ -3,17 +3,20 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np 
 from sklearn.preprocessing import LabelEncoder,StandardScaler,MinMaxScaler,PowerTransformer
-
+import add_steps
 class data_:
-
+	
+	
+	
 	def read_file(self,filepath):
+		
 		return pd.read_csv(str(filepath))
 
 	def convert_category(self,df,column_name):
 
 		le=LabelEncoder()
 		df[column_name] =le.fit_transform(df[column_name])
-		return df[column_name]
+		return df[column_name],"LabelEncoder()"
 	
 	def get_column_list(self,df):
 
@@ -38,11 +41,13 @@ class data_:
 
 	def fillna(self,df,column):
 
+		
 		df[column].fillna("Uknown",inplace=True)
 		return df[column]
 
 	def fillmean(self,df,column):
 
+		
 		df[column].fillna(df[column].mean(),inplace=True)
 		return df[column]
 
@@ -73,7 +78,7 @@ class data_:
 		scaled_features=sc.fit_transform(x)
 		scaled_features_df = pd.DataFrame(scaled_features, index=x.index, columns=x.columns)
 		scaled_features_df[target]=df[target]
-		return scaled_features_df
+		return scaled_features_df,"StandardScaler()"
 
 	def MinMaxScale(self,df,target):
 		
@@ -82,7 +87,7 @@ class data_:
 		scaled_features=sc.fit_transform(x)
 		scaled_features_df = pd.DataFrame(scaled_features, index=x.index, columns=x.columns)
 		scaled_features_df[target]=df[target]
-		return scaled_features_df
+		return scaled_features_df,"MinMaxScaler()"
 		
 	def PowerScale(self,df,target):
 		
@@ -91,7 +96,7 @@ class data_:
 		scaled_features=sc.fit_transform(x)
 		scaled_features_df = pd.DataFrame(scaled_features, index=x.index, columns=x.columns)
 		scaled_features_df[target]=df[target]
-		return scaled_features_df
+		return scaled_features_df,"PowerTransformer()"
 
 
 	def plot_histogram(self,df,column):
